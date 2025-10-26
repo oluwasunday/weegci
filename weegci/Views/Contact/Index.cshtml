@@ -1,0 +1,133 @@
+﻿@model weegci.models.ContactFormViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "ContactUs";
+    //ViewData["Title"] = "ContactUs";
+}
+
+<div class="hero-wrap" style="background-image: url('images/weegci/gallery-3.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+            <div class="col-md-7 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+                <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a asp-controller="Home">Home</a></span> <span>Contact</span></p>
+                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Contact Us</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            @ViewBag.Success
+            @if (ViewBag.Success != null || !string.IsNullOrEmpty(ViewBag.Success))
+            {
+                <div class="alert alert-success">
+                    @ViewBag.Success
+                </div>
+            }
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Success"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["Error"]
+                </div>
+            }
+        </div>
+        <div class="row block-9">
+            <div class="col-md-6 pr-md-5">
+                <h4 class="mb-4">Do you have any questions?</h4>
+                @* <form action="#">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                    </div>
+                </form> *@
+
+
+                @using (Html.BeginForm("ContactUs", "Contact", FormMethod.Post))
+                {
+                    <div>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Your Name" })
+                    </div>
+                    <br />
+                    <div>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Your Email" })
+                    </div>
+                    <br />
+                    <div>
+                        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", placeholder = "Subject" })
+                    </div>
+                    <br />
+                    <div>
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control", placeholder = "Message", rows = 6 })
+                    </div>
+                    <br />
+
+                    <button type="submit" class="btn btn-warning py-3 px-5">Send Message</button>
+                }
+
+            </div>
+
+            @* <div class="col-md-6" id="map"></div> *@
+            <div class="col-md-6 pr-md-5">
+                <div class="mb-4">
+                    <h2 class="h4">Contact Information</h2>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-md-12">
+                    <p>
+                        <span>Address:</span> NO 29A Danladi B, Opposite Former Polaris Bank, Along Hadejia Road, Gezawa Local Government, Kano State, Nigeria.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        <span>Phone 1:</span> <a href="tel://+2348036218636">
+                            +2348 0362 186 36
+                        </a>
+                    </p>
+                    <p><span>Phone 2:</span> <a href="tel://+2347033386673">+2347 0333 866 73</a></p>
+                    <p><span>Phone 3:</span> <a href="tel://+2347061603036">+2347 0616 030 36</a></p>
+                    <p><span>Phone 4:</span> <a href="tel://+2347064872554">+2347 0648 725 54</a></p>
+                </div>
+                <div class="col-md-6">
+                    <p><span>Email:</span> <a href="mailto:weegci@yahoo.com">weegci@yahoo.com</a></p>
+                </div>
+                <div class="col-md-6">
+                    <p><span>Website</span> <a href="#">weegci.org.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    setTimeout(() => { $(".alert").fadeOut(); }, 5000);
+</script>
