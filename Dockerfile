@@ -1,19 +1,31 @@
-# Use official .NET 8 SDK image for build
+# Use the official .NET 8 SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copy everything and build
+# Copy the project files first for dependency restore
+COPY weegci.models/weegci.models.csproj weegci.models/
+COPY weegci.services/weegci.services.csproj weegci.services/
+COPY weegci/weegci.csproj weegci/
+
+# Restore dependencies for the main app (this will also pull class libraries)
+RUN dotnet restore weegci/weegci.csproj
+
+# Copy the entire solution
 COPY . .
-RUN dotnet publish -c Release -o out
 
-# Use smaller ASP.NET runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+# Build the main project in Release mode
+WORKDIR /src/weegci
+RUN dotnet build weegci.csproj -c Release -o /app/build
+
+# Publish the app
+RUN dotnet publish weegci.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# Use the ASP.NET Core runtime image for the final stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=build /app/out ./
 
-# Expose port 8080 (Render default)
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+# Copy the published files from the build stage
+COPY --from=build /app/publish .
 
-# Run the app
+# Set the entry point
 ENTRYPOINT ["dotnet", "weegci.dll"]
