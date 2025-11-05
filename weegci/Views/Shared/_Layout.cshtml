@@ -70,7 +70,7 @@
                         @* <li class="nav-item"><a href="causes.html" class="nav-link">Causes</a></li>
                         <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li> *@
                         <li class="nav-item"><a asp-controller="Gallery" class="nav-link">Gallery</a></li>
-                        <li class="nav-item"><a href="event.html" class="nav-link">Events</a></li>
+                        @* <li class="nav-item"><a href="event.html" class="nav-link">Events</a></li> *@
                         <li class="nav-item"><a asp-controller="Contact" class="nav-link">Contact</a></li>
                     </ul>
                 </div>
@@ -137,12 +137,12 @@
                     <div class="ftco-footer-widget mb-4 ml-md-4">
                         <h2 class="ftco-heading-2">Site Links</h2>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block">Home</a></li>
-                            <li><a href="#" class="py-2 d-block">About</a></li>
+                            <li><a asp-controller="Home" class="py-2 d-block">Home</a></li>
+                            <li><a asp-controller="AboutUs" class="py-2 d-block">About</a></li>
                             @* <li><a href="#" class="py-2 d-block">Donate</a></li> *@
-                            <li><a href="#" class="py-2 d-block">Gallery</a></li>
-                            <li><a href="#" class="py-2 d-block">Events</a></li>
-                            <li><a href="#" class="py-2 d-block">Contact</a></li>
+                            <li><a asp-controller="Gallery" class="py-2 d-block">Gallery</a></li>
+                            @* <li><a href="#" class="py-2 d-block">Events</a></li> *@
+                            <li><a asp-controller="Contact" class="py-2 d-block">Contact</a></li>
                         </ul>
                     </div>
                 </div>
