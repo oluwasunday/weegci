@@ -36,6 +36,11 @@ namespace weegci.services
                 var apiKey = config["BrevoSettings:ApiKey"];
                 var sender = config["BrevoSettings:RecipientEmail"];
 
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    throw new Exception("BREVO_API_KEY not found or empty.");
+                }
+
                 // Configure Brevo client
                 Configuration.Default.ApiKey.Clear();
                 Configuration.Default.ApiKey.Add("api-key", apiKey);
