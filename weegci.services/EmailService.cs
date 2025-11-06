@@ -5,6 +5,10 @@ using weegci.models;
 using weegci.services.interfaces;
 using Microsoft.Extensions.Options;
 using System.Runtime;
+using Microsoft.Extensions.Configuration.Json;
+using sib_api_v3_sdk.Api;
+using sib_api_v3_sdk.Client;
+using sib_api_v3_sdk.Model;
 
 namespace weegci.services
 {
@@ -23,46 +27,37 @@ namespace weegci.services
         {
             try
             {
-                SmtpSettings settings = _config.GetSection("SmtpSettings").Get<SmtpSettings>();
+                var config = new ConfigurationBuilder()
+                        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                        .AddJsonFile("appsettings.json", optional: true)
+                        .AddEnvironmentVariables()
+                        .Build();
 
-                // The email that will send the message (SMTP account)
-                var smtpFrom = new MailAddress(settings.Username, model.Name);
+                var apiKey = config["BrevoSettings:ApiKey"];
+                var sender = config["BrevoSettings:RecipientEmail"];
 
-                // The fixed email that receives messages
-                var smtpTo = new MailAddress(settings.ReceiverEmail);
+                // Configure Brevo client
+                Configuration.Default.ApiKey.Clear();
+                Configuration.Default.ApiKey.Add("api-key", apiKey);
+                var apiInstance = new TransactionalEmailsApi();
 
-                var body = $@"
-                            A new contact message was submitted:
+                // Compose the email
+                var sendSmtpEmail = new SendSmtpEmail(
+                    sender: new SendSmtpEmailSender("WEEGCI", sender),
+                    to: new List<SendSmtpEmailTo> { new SendSmtpEmailTo("weegci@yahoo.com"), new SendSmtpEmailTo("dominionkoncept01@gmail.com") },
+                    subject: model.Subject,
+                    htmlContent: $"<p>New message from: <strong>{model.Name} - {model.Email}</strong></p><p>{model.Message}</p>"
+                );
 
-                            Name: {model.Name}
-                            Email: {model.Email}
+                // Send the email
+                apiInstance.SendTransacEmail(sendSmtpEmail);
 
-                            Message:
-                            {model.Message}
-                            ";
-
-                using (var message = new MailMessage(smtpFrom, smtpTo))
+                return new MailResponseModel()
                 {
-                    message.Subject = model.Subject;
-                    message.Body = body;
-
-                    var client = new SmtpClient
-                    {
-                        Host = settings.Host,
-                        Port = settings.Port,
-                        EnableSsl = settings.EnableSSL,
-                        Credentials = new NetworkCredential(settings.Username, settings.Password)
-                    };
-                    client.UseDefaultCredentials = false;
-
-                    client.Send(message);
-                    return new MailResponseModel()
-                    {
-                        IsSucceeded = true,
-                        Message = "Message sent successfully.",
-                        Status = "Success"
-                    };
-                }
+                    IsSucceeded = true,
+                    Message = $"Message sent",
+                    Status = "Success"
+                };
             }
             catch (Exception ex)
             {
