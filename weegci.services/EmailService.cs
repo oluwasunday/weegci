@@ -33,8 +33,8 @@ namespace weegci.services
                         .AddEnvironmentVariables()
                         .Build();
 
-                var apiKey = config["BrevoSettings:ApiKey"];
-                var sender = config["BrevoSettings:RecipientEmail"];
+                var apiKey = config["BrevoSettings:ApiKey"] ?? Environment.GetEnvironmentVariable("BrevoSettings__ApiKey");
+                var sender = config["BrevoSettings:RecipientEmail"] ?? "sundayoladejo13@gmail.com";
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
