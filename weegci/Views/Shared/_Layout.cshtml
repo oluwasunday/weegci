@@ -65,13 +65,13 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a asp-controller="Home" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a asp-controller="AboutUs" class="nav-link">About</a></li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")"><a asp-controller="Home" class="nav-link">Home</a></li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "AboutUs" ? "active" : "")"><a asp-controller="AboutUs" class="nav-link">About</a></li>
                         @* <li class="nav-item"><a href="causes.html" class="nav-link">Causes</a></li>
                         <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li> *@
-                        <li class="nav-item"><a asp-controller="Gallery" class="nav-link">Gallery</a></li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Gallery" ? "active" : "")"><a asp-controller="Gallery" class="nav-link">Gallery</a></li>
                         @* <li class="nav-item"><a href="event.html" class="nav-link">Events</a></li> *@
-                        <li class="nav-item"><a asp-controller="Contact" class="nav-link">Contact</a></li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Contact" ? "active" : "")"><a asp-controller="Contact" class="nav-link">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 <div class="col-md-5">
                     <div class="ftco-footer-widget mb-4">
                         <h2 class="ftco-heading-2">About Us</h2>
-                        <p>Women economic empowerment and girls counseling initiative WEEGCI is a nonprofit and non- governmental organization dedicated to...</p>
+                        <p>Women economic empowerment and girls counseling initiative (WEEGCI) is a nonprofit and non- governmental organization dedicated to...</p>
                         <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                             <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                             <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>

@@ -10,6 +10,7 @@ using sib_api_v3_sdk.Api;
 using sib_api_v3_sdk.Client;
 using sib_api_v3_sdk.Model;
 
+
 namespace weegci.services
 {
     public class EmailService : IEmailService
@@ -57,6 +58,9 @@ namespace weegci.services
                 // Send the email
                 apiInstance.SendTransacEmail(sendSmtpEmail);
 
+                // Send confirmation email to sender
+                //await SendConfirmationEmailAsync(apiInstance, model.Email, model.Name, model.Subject);
+
                 return new MailResponseModel()
                 {
                     IsSucceeded = true,
@@ -73,6 +77,18 @@ namespace weegci.services
                     Status = "Error"
                 };
             }
+        }
+
+        private static async System.Threading.Tasks.Task SendConfirmationEmailAsync(TransactionalEmailsApi apiInstance, string recipientEmail, string recipientName, string originalSubject)
+        {
+            var confirmationEmail = new SendSmtpEmail(
+                sender: new SendSmtpEmailSender("Support Team", "weegci@yahoo.com"),
+                to: new List<SendSmtpEmailTo> { new SendSmtpEmailTo(recipientEmail) },
+                subject: $"Re: {originalSubject}",
+                htmlContent: $"<p>Dear {recipientName},</p><p>Thank you for reaching out! Your message has been received and our team will get back to you soon.</p><p>Warm regards,<br/>Support Team</p>"
+            );
+
+            await apiInstance.SendTransacEmailAsync(confirmationEmail);
         }
 
     }
