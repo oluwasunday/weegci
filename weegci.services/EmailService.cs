@@ -51,6 +51,7 @@ namespace weegci.services
                 var sendSmtpEmail = new SendSmtpEmail(
                     sender: new SendSmtpEmailSender("WEEGCI", sender),
                     to: new List<SendSmtpEmailTo> { new SendSmtpEmailTo("weegci@yahoo.com"), new SendSmtpEmailTo("dominionkoncept01@gmail.com") },
+                    bcc: new List<SendSmtpEmailBcc> { new SendSmtpEmailBcc("weegci@yahoo.com") },
                     subject: model.Subject,
                     htmlContent: $"<p>New message from: <strong>{model.Name} - {model.Email}</strong></p><p>{model.Message}</p>"
                 );
